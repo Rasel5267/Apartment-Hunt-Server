@@ -21,8 +21,19 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   console.log('db connected');
   const bookingCollection = client.db("apartmentHunt").collection("bookings");
-  app.post('/bookings', (req, res) => {
+  app.post('/addBooking', (req, res) => {
+    console.log(req);
+    const name = req.body.name;
+    const number = req.body.number;
+    const email = req.body.email;    
+    const message = req.body.message;
 
+    bookingCollection.insertOne({ name, number, email, message })
+      .then(result => {
+        res.send(result.insertedCount > 0)
+      }).catch(function (error) {
+        // Handle error
+      });
   });
 
   const apartmentCollection = client.db("apartmentHunt").collection("apartments");
