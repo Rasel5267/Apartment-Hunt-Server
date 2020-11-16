@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
+const ObjectId = require('mongodb').ObjectID;
 
 
 const app = express();
@@ -25,7 +26,6 @@ client.connect(err => {
   const bookingCollection = client.db("apartmentHunt").collection("bookings");
 
   app.post('/addBooking', (req, res) => {
-    console.log(req);
     const name = req.body.name;
     const number = req.body.number;
     const email = req.body.email;
@@ -55,10 +55,17 @@ client.connect(err => {
       .toArray((err, docs) => res.send(docs));
   });
 
+  app.patch('/update/:id', (req, res) => {
+    bookingCollection.updateOne({ _id: ObjectId(req.params.id) },
+      {
+        $set: { status: req.body.status }
+      })
+      .then(result => res.send(result.modifiedCount > 0))
+  });
+
   const apartmentCollection = client.db("apartmentHunt").collection("apartments");
 
   app.post('/addNewApartment', (req, res) => {
-    console.log(req);
     const file = req.files.file;
     const title = req.body.title;
     const price = req.body.price;
