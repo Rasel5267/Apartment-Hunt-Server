@@ -13,12 +13,10 @@ app.use(fileUpload());
 
 const port = 5500;
 
-//dbPasss: xyx12345, userName team09   dbName: apartmentHunt;
 //Nihal mongoDB => user:apartmentHuntUser, pass: abcd1234, DB-Name: apartmentHunt;
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://apartmentHuntUser:abcd1234@cluster0.pf9xm.mongodb.net/apartmentHunt?retryWrites=true&w=majority";
-// const uri = "mongodb+srv://team09:xyx12345@cluster0.sppky.mongodb.net/apartmentHunt?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 client.connect(err => {
